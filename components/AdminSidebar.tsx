@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Package, ShoppingBag, LogOut } from 'lucide-react';
+import { Package, ShoppingBag, LogOut, Settings } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -19,6 +19,7 @@ export function AdminSidebar() {
   const navItems = [
     { href: '/admin/products', label: 'Products', icon: Package },
     { href: '/admin/orders', label: 'Orders', icon: ShoppingBag },
+    { href: '/admin/settings', label: 'Settings', icon: Settings },
   ];
 
   return (

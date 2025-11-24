@@ -13,12 +13,15 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
   const [user, setUser] = useReactState<any>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
     });
+    // mark client mount to avoid hydration mismatches for client-only values
+    setMounted(true);
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -87,7 +90,7 @@ export function Navbar() {
             >
               <ShoppingCart className="h-5 w-5" />
               <span>Cart</span>
-              {itemCount > 0 && (
+              {mounted && itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {itemCount}
                 </span>

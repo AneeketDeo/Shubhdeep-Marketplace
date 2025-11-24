@@ -28,11 +28,14 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [razorpayEnabled, setRazorpayEnabled] = useState(true);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
+    watch,
   } = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema),
   });
@@ -43,6 +46,53 @@ export default function CheckoutPage() {
       setUser(data.user);
     });
   }, []);
+
+  // Load Razorpay enabled flag from admin settings API
+  useEffect(() => {
+    let mounted = true;
+    fetch('/api/admin/settings')
+      .then((r) => r.json())
+      .then((data) => {
+        if (!mounted) return;
+        const val = typeof data.enabled === 'boolean' ? data.enabled : true;
+        setRazorpayEnabled(val);
+        if (!val) setPaymentMethod('cod');
+      })
+      .catch(() => {
+        /* ignore, keep default enabled */
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Prefill the address form from localStorage if available
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('shippingAddress');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // ensure parsed matches the shape we expect
+        reset(parsed);
+      }
+    } catch (e) {
+      // ignore JSON parse errors
+    }
+  }, [reset]);
+
+  // Persist address to localStorage as the user types
+  const watchedValues = watch();
+  useEffect(() => {
+    try {
+      // Avoid writing undefined/empty objects
+      if (watchedValues && Object.keys(watchedValues).length > 0) {
+        localStorage.setItem('shippingAddress', JSON.stringify(watchedValues));
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+  }, [watchedValues]);
 
   const handleRazorpayPayment = async (orderId: string) => {
     return new Promise((resolve, reject) => {
@@ -75,6 +125,12 @@ export default function CheckoutPage() {
   };
 
   const onSubmit = async (data: AddressFormData) => {
+    // Save address snapshot to localStorage
+    try {
+      localStorage.setItem('shippingAddress', JSON.stringify(data));
+    } catch (e) {
+      // ignore storage errors
+    }
     if (items.length === 0) {
       alert('Your cart is empty');
       return;
@@ -108,7 +164,7 @@ export default function CheckoutPage() {
         razorpayOrderId = razorpayData.orderId;
 
         // Handle Razorpay payment
-        await handleRazorpayPayment(razorpayOrderId);
+  await handleRazorpayPayment(razorpayOrderId!);
       }
 
       // Create order in database
@@ -235,16 +291,19 @@ export default function CheckoutPage() {
               <div className="mt-6">
                 <h3 className="text-lg font-semibold mb-4">Payment Method</h3>
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      value="razorpay"
-                      checked={paymentMethod === 'razorpay'}
-                      onChange={(e) => setPaymentMethod(e.target.value as 'razorpay')}
-                      className="w-4 h-4"
-                    />
-                    <span>Razorpay (Online Payment)</span>
-                  </label>
+                  {razorpayEnabled && (
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        value="razorpay"
+                        checked={paymentMethod === 'razorpay'}
+                        onChange={(e) => setPaymentMethod(e.target.value as 'razorpay')}
+                        className="w-4 h-4"
+                      />
+                      <span>Razorpay (Online Payment)</span>
+                    </label>
+                  )}
+
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
