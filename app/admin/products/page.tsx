@@ -2,6 +2,7 @@ import { getProducts } from '@/lib/actions/products';
 import Link from 'next/link';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { ProductActions } from '@/components/ProductActions';
+import { BulkUploadProducts } from '@/components/BulkUploadProducts';
 
 export default async function AdminProductsPage() {
   const products = await getProducts();
@@ -10,13 +11,16 @@ export default async function AdminProductsPage() {
     <div className="p-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Products</h1>
-        <Link
-          href="/admin/products/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
-        >
-          <Plus className="h-5 w-5" />
-          Add Product
-        </Link>
+        <div className="flex gap-3">
+          <BulkUploadProducts />
+          <Link
+            href="/admin/products/new"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          >
+            <Plus className="h-5 w-5" />
+            Add Product
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
@@ -56,7 +60,7 @@ export default async function AdminProductsPage() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="text-sm font-medium text-gray-900">{product.title}</div>
-                  <div className="text-sm text-gray-500 line-clamp-1">
+                  <div className="text-sm text-gray-700 line-clamp-1">
                     {product.description}
                   </div>
                 </td>

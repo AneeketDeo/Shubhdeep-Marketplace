@@ -43,12 +43,12 @@ export default function AdminSettingsPage() {
       <div className="bg-white border border-gray-200 rounded-lg p-6 max-w-lg">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-medium">Razorpay (Online Payment)</h2>
-            <p className="text-sm text-gray-600">Enable or disable Razorpay checkout option for customers.</p>
+            <h2 className="text-lg font-medium text-gray-900">Razorpay (Online Payment)</h2>
+            <p className="text-sm text-gray-800">Enable or disable Razorpay checkout option for customers.</p>
           </div>
           <div>
             {loading ? (
-              <span>Loading…</span>
+              <span className="text-gray-900">Loading…</span>
             ) : (
               <label className="inline-flex items-center">
                 <input

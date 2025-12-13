@@ -57,3 +57,27 @@ export async function deleteProduct(
   return { success: true };
 }
 
+export async function bulkCreateProducts(
+  products: Array<{
+    title: string;
+    description: string;
+    price: number;
+    stock: number;
+    category_id: string;
+    images: string[];
+  }>
+): Promise<{ success: boolean; error?: string; created?: number; failed?: number }> {
+  const adminSupabase = createAdminClient();
+
+  const { error, data } = await adminSupabase
+    .from('products')
+    .insert(products)
+    .select();
+
+  if (error) {
+    return { success: false, error: error.message, created: 0, failed: products.length };
+  }
+
+  return { success: true, created: data?.length || 0, failed: 0 };
+}
+

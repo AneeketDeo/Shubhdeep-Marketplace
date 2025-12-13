@@ -5,17 +5,18 @@ import { AddToCartButton } from '@/components/AddToCartButton';
 import { ProductCard } from '@/components/ProductCard';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const product = await getProductById(params.id);
+  const { id } = await params;
+  const product = await getProductById(id);
 
   if (!product) {
     notFound();
   }
 
-  const relatedProducts = await getRelatedProducts(product.id, product.category_id);
+  const relatedProducts = await getRelatedProducts(id, product.category_id);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -57,9 +58,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
             ₹{product.price.toFixed(2)}
           </p>
           <div className="mb-6">
-            <p className="text-gray-700 mb-4">{product.description}</p>
+            <p className="text-gray-900 mb-4">{product.description}</p>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-gray-800">
                 Stock: {product.stock > 0 ? `${product.stock} available` : 'Out of stock'}
               </span>
             </div>

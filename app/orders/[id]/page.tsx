@@ -5,12 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function OrderDetailPage({ params }: PageProps) {
+  const { id } = await params;
   const user = await requireAuth();
-  const order = await getOrderById(params.id, user.id);
+  const order = await getOrderById(id, user.id);
 
   if (!order) {
     notFound();
@@ -40,7 +41,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
         <div className="flex justify-between items-start mb-6">
           <div>
             <h1 className="text-2xl font-bold mb-2">Order #{order.id.slice(0, 8)}</h1>
-            <p className="text-gray-600">
+            <p className="text-gray-800">
               Placed on{' '}
               {new Date(order.created_at).toLocaleDateString('en-IN', {
                 year: 'numeric',
@@ -59,7 +60,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
             >
               {order.status.toUpperCase()}
             </span>
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-gray-800 mt-2">
               Payment: {order.payment_status.toUpperCase()}
             </p>
           </div>
@@ -68,7 +69,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
         {/* Order Items */}
         {order.order_items && order.order_items.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-semibold mb-4">Order Items</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-900">Order Items</h2>
             <div className="space-y-4">
               {order.order_items.map((item) => (
                 <div
@@ -86,8 +87,8 @@ export default async function OrderDetailPage({ params }: PageProps) {
                         />
                       </div>
                       <div className="flex-grow">
-                        <h3 className="font-semibold">{item.product.title}</h3>
-                        <p className="text-gray-600 text-sm">
+                        <h3 className="font-semibold text-gray-900">{item.product.title}</h3>
+                        <p className="text-gray-800 text-sm">
                           Quantity: {item.quantity} × ₹{item.price.toFixed(2)}
                         </p>
                       </div>
@@ -107,9 +108,9 @@ export default async function OrderDetailPage({ params }: PageProps) {
         {/* Delivery Address */}
         {order.address && (
           <div className="mb-6">
-            <h2 className="text-xl font-semibold mb-4">Delivery Address</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-900">Delivery Address</h2>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-700">
+              <p className="text-gray-900">
                 {order.address.full_name}
                 <br />
                 {order.address.address_line}
@@ -135,7 +136,7 @@ export default async function OrderDetailPage({ params }: PageProps) {
 
       {/* Status Timeline */}
       <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Order Status</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-900">Order Status</h2>
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <div
@@ -144,8 +145,8 @@ export default async function OrderDetailPage({ params }: PageProps) {
               }`}
             />
             <div>
-              <p className="font-semibold">Order Placed</p>
-              <p className="text-sm text-gray-600">
+              <p className="font-semibold text-gray-900">Order Placed</p>
+              <p className="text-sm text-gray-800">
                 {new Date(order.created_at).toLocaleDateString()}
               </p>
             </div>
@@ -159,11 +160,11 @@ export default async function OrderDetailPage({ params }: PageProps) {
               }`}
             />
             <div>
-              <p className="font-semibold">Shipped</p>
+              <p className="font-semibold text-gray-900">Shipped</p>
               {order.status === 'shipped' || order.status === 'delivered' ? (
-                <p className="text-sm text-gray-600">Your order has been shipped</p>
+                <p className="text-sm text-gray-800">Your order has been shipped</p>
               ) : (
-                <p className="text-sm text-gray-400">Pending</p>
+                <p className="text-sm text-gray-600">Pending</p>
               )}
             </div>
           </div>
@@ -174,11 +175,11 @@ export default async function OrderDetailPage({ params }: PageProps) {
               }`}
             />
             <div>
-              <p className="font-semibold">Delivered</p>
+              <p className="font-semibold text-gray-900">Delivered</p>
               {order.status === 'delivered' ? (
-                <p className="text-sm text-gray-600">Your order has been delivered</p>
+                <p className="text-sm text-gray-800">Your order has been delivered</p>
               ) : (
-                <p className="text-sm text-gray-400">Pending</p>
+                <p className="text-sm text-gray-600">Pending</p>
               )}
             </div>
           </div>

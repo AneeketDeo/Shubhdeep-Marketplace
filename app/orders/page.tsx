@@ -14,7 +14,7 @@ export default async function OrdersPage() {
       {orders.length === 0 ? (
         <div className="text-center py-12">
           <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 text-lg mb-4">You haven't placed any orders yet.</p>
+          <p className="text-gray-800 text-lg mb-4">You haven't placed any orders yet.</p>
           <Link
             href="/category/all"
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
@@ -33,7 +33,7 @@ export default async function OrdersPage() {
               <div className="flex justify-between items-start">
                 <div>
                   <div className="flex items-center gap-4 mb-2">
-                    <span className="font-semibold">Order #{order.id.slice(0, 8)}</span>
+                    <span className="font-semibold text-gray-900">Order #{order.id.slice(0, 8)}</span>
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
                         order.status === 'delivered'
@@ -46,7 +46,7 @@ export default async function OrdersPage() {
                       {order.status.toUpperCase()}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-800 text-sm">
                     Placed on{' '}
                     {new Date(order.created_at).toLocaleDateString('en-IN', {
                       year: 'numeric',
@@ -55,7 +55,7 @@ export default async function OrdersPage() {
                     })}
                   </p>
                   {order.order_items && (
-                    <p className="text-gray-600 text-sm mt-1">
+                    <p className="text-gray-800 text-sm mt-1">
                       {order.order_items.length} item(s)
                     </p>
                   )}
@@ -64,7 +64,7 @@ export default async function OrdersPage() {
                   <p className="text-2xl font-bold text-blue-600">
                     ₹{order.total_amount.toFixed(2)}
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-800 mt-1">
                     {order.payment_status.toUpperCase()}
                   </p>
                 </div>

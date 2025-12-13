@@ -60,7 +60,7 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-900">Sign Up</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -68,33 +68,33 @@ export default function SignupPage() {
             </div>
           )}
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm font-medium mb-1 text-gray-900">Email</label>
             <input
               {...register('email')}
               type="email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="block text-sm font-medium mb-1 text-gray-900">Password</label>
             <input
               {...register('password')}
               type="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Confirm Password</label>
+            <label className="block text-sm font-medium mb-1 text-gray-900">Confirm Password</label>
             <input
               {...register('confirmPassword')}
               type="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             />
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
@@ -107,7 +107,7 @@ export default function SignupPage() {
           >
             {loading ? 'Signing up...' : 'Sign Up'}
           </button>
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-gray-900">
             Already have an account?{' '}
             <Link href="/auth/login" className="text-blue-600 hover:text-blue-700">
               Sign in

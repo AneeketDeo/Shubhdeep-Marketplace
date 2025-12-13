@@ -4,12 +4,13 @@ import { notFound } from 'next/navigation';
 import { ProductForm } from '@/components/ProductForm';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function EditProductPage({ params }: PageProps) {
+  const { id } = await params;
   const [product, categories] = await Promise.all([
-    getProductById(params.id),
+    getProductById(id),
     getCategories(),
   ]);
 

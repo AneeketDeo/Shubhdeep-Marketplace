@@ -3,22 +3,24 @@ import { ProductCard } from '@/components/ProductCard';
 import { ProductFilters } from '@/components/ProductFilters';
 
 type PageProps = {
-  params: { id: string };
-  searchParams: { search?: string; sort?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ search?: string; sort?: string }>;
 };
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {
+  const { id } = await params;
+  const { search, sort } = await searchParams;
   const [products, categories] = await Promise.all([
     getProducts({
-      categoryId: params.id,
-      search: searchParams.search,
-      sortBy: searchParams.sort as 'price_asc' | 'price_desc' | undefined,
+      categoryId: id,
+      search: search,
+      sortBy: sort as 'price_asc' | 'price_desc' | undefined,
     }),
     getCategories(),
   ]);
 
   const categoryName =
-    categories.find((c) => c.id === params.id)?.name || 'All Products';
+    categories.find((c) => c.id === id)?.name || 'All Products';
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -26,14 +28,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         <h1 className="text-3xl font-bold">{categoryName}</h1>
         <ProductFilters
           categories={categories}
-          currentCategory={params.id}
-          currentSort={searchParams.sort}
+          currentCategory={id}
+          currentSort={sort}
         />
       </div>
 
       {products.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No products found.</p>
+          <p className="text-gray-800 text-lg">No products found.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

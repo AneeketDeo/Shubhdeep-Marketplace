@@ -38,10 +38,10 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         <div className="p-4">
-          <h3 className="font-semibold text-lg mb-2 line-clamp-2">
+          <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900">
             {product.title}
           </h3>
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+          <p className="text-gray-800 text-sm mb-3 line-clamp-2">
             {product.description}
           </p>
           <div className="flex items-center justify-between">
@@ -58,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </button>
           </div>
           {product.stock > 0 && (
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-gray-700 mt-2">
               {product.stock} in stock
             </p>
           )}

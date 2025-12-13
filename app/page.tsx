@@ -32,7 +32,7 @@ export default async function HomePage() {
               href={`/category/${category.id}`}
               className="bg-white border-2 border-gray-200 rounded-lg p-6 text-center hover:border-blue-500 transition hover:shadow-lg"
             >
-              <h3 className="text-lg font-semibold">{category.name}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
             </Link>
           ))}
         </div>
